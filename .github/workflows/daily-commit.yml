@@ -1,0 +1,29 @@
+name: Daily Green Commit
+
+on:
+  schedule:
+    - cron: "0 2 * * *"   # 每天北京时间 10:00 自动提交
+  workflow_dispatch:        # 也可以手动触发
+
+jobs:
+  water-plant:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Water the plant 🌱
+        run: |
+          echo "Date: $(date '+%Y-%m-%d %H:%M:%S')" >> water.log
+          echo "$(date '+%Y-%m-%d') 今天也有好好浇水哦 🌱" >> README.md
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --quiet && git diff --staged --quiet && echo "No changes" || (git commit -m "🌱 daily watering - $(date '+%Y-%m-%d')" && git push)
