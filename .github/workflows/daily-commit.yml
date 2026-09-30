@@ -2,7 +2,7 @@ name: Daily Green Commit
 
 on:
   schedule:
-    - cron: "0 2 * * *"
+    - cron: "5 18 * * *"
   workflow_dispatch:
 
 jobs:
